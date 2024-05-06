@@ -20,17 +20,37 @@ from ..utils import checkpoint
 from ..utils.samples.manager import SampleManager
 from ..utils.utils import get_pool_executor
 
-
+NOISY_TRAIN = True
+TRAIN_COUNT = 0
 logger = logging.getLogger(__name__)
 
 
-class CompressionSolver(base.StandardSolver):
+def process_noise(x):
+    print("dbgdbgdbg got to process_noise")
+    import torchaudio
+    import random
+    noise_path = "/Users/aarontaub/Library/CloudStorage/Box-Box/Aaron-Personal/School/masters/Thesis/Datasets/noises_1/audio-8khz/1-7456-A-13.wav"
+    noise, _ = torchaudio.load(noise_path)
+
+    if noise.size(1) > x.size(1):
+        start = torch.randint(0, noise.size(1) - x.size(1) + 1, (1,))
+        noise = noise[:, start:start + x.size(1)]
+    else:
+        padding = x.size(1) - noise.size(1)
+        noise = torch.nn.functional.pad(noise, (0, padding))
+
+    return x + noise * random.choice([2, 1, 0.5, 0.25])
+
+
+class CompressionSolver(
+    base.StandardSolver):  # TODO: create new class that inherits from this and changes the 'run_step'
     """Solver for compression task.
 
     The compression task combines a set of perceptual and objective losses
     to train an EncodecModel (composed of an encoder-decoder and a quantizer)
     to perform high fidelity audio reconstruction.
     """
+
     def __init__(self, cfg: omegaconf.DictConfig):
         super().__init__(cfg)
         self.rng: torch.Generator  # set at each epoch
@@ -59,6 +79,7 @@ class CompressionSolver(base.StandardSolver):
     def build_model(self):
         """Instantiate model and optimizer."""
         # Model and optimizer
+        self.device = 'cpu'
         self.model = models.builders.get_compression_model(self.cfg).to(self.device)
         self.optimizer = builders.get_optimizer(self.model.parameters(), self.cfg.optim)
         self.register_stateful('model', 'optimizer')
@@ -84,6 +105,9 @@ class CompressionSolver(base.StandardSolver):
         """Perform one training or valid step on a given batch."""
         x = batch.to(self.device)
         y = x.clone()
+
+        if NOISY_TRAIN:
+            process_noise(x)
 
         qres = self.model(x)
         assert isinstance(qres, quantization.QuantizedResult)
@@ -160,6 +184,12 @@ class CompressionSolver(base.StandardSolver):
             for loss_name, criterion in self.info_losses.items():
                 loss = criterion(y_pred, y)
                 info_losses[loss_name] = loss
+
+        for key, value in info_losses.items():
+            global TRAIN_COUNT
+            print(f"Run: {TRAIN_COUNT}\n", key, value)
+            TRAIN_COUNT += 1
+
 
         metrics.update(info_losses)
 
@@ -247,7 +277,6 @@ class CompressionSolver(base.StandardSolver):
                     # We need to determine if this a convtr or a regular conv.
                     layer = int(k.split('.')[2])
                     if isinstance(model.model.decoder.layers[layer].conv, torch.nn.ConvTranspose1d):
-
                         k = k.replace('.conv.', '.convtr.')
                 k = k.replace('encoder.layers.', 'encoder.model.')
                 k = k.replace('decoder.layers.', 'decoder.model.')

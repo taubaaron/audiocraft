@@ -1,0 +1,10 @@
+# @package __global__
+
+defaults: # TODO: verify this config values
+  - compression/default
+  - /model: encodec/encodec_large_nq4_s320
+  - override /dset: audio/audio_8khz.yaml
+  - _self_
+
+channels: 1
+sample_rate: 8000

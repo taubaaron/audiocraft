@@ -1,0 +1,15 @@
+# @package __global__
+
+# environmental sounds dataset compiling all datasets
+# with applied filters on tags
+datasource:
+  max_sample_rate: 8000
+  max_channels: 1
+
+# TODO: Add 8khz dataset (should I just resample a regular dataset?)
+  train: /Users/aarontaub/Library/CloudStorage/Box-Box/Aaron-Personal/School/masters/Thesis/Datasets/VCTK/VCTK-Corpus/wav8-train
+  valid: /Users/aarontaub/Library/CloudStorage/Box-Box/Aaron-Personal/School/masters/Thesis/Datasets/VCTK/VCTK-Corpus/wav8-valid
+  evaluate: /Users/aarontaub/Library/CloudStorage/Box-Box/Aaron-Personal/School/masters/Thesis/Datasets/VCTK/VCTK-Corpus/wav8-test
+  generate: /Users/aarontaub/Library/CloudStorage/Box-Box/Aaron-Personal/School/masters/Thesis/Datasets/VCTK/VCTK-Corpus/wav8-test # identical to evaluate
+
+
