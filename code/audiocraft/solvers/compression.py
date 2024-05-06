@@ -185,10 +185,17 @@ class CompressionSolver(
                 loss = criterion(y_pred, y)
                 info_losses[loss_name] = loss
 
+        global TRAIN_COUNT
+        with open("train_file.txt", "a") as f:
+            f.write(f"Run: {TRAIN_COUNT}\n")
+            f.close()
+        print(f"Run: {TRAIN_COUNT}\n")
+        TRAIN_COUNT += 1
         for key, value in info_losses.items():
-            global TRAIN_COUNT
-            print(f"Run: {TRAIN_COUNT}\n", key, value)
-            TRAIN_COUNT += 1
+            print(key, value, "\n")
+            with open("train_file.txt", "a") as f:
+                f.write(f"{key}: {value} \n")
+                f.close()
 
 
         metrics.update(info_losses)
