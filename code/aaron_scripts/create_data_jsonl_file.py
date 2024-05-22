@@ -35,8 +35,17 @@ def create_jsonl(input_folder, output_file):
                     }
                     f_out.write(json.dumps(json_line) + '\n')
 
-# Example usage
-input_folder = "/Users/aarontaub/Library/CloudStorage/Box-Box/Aaron-Personal/School/masters/Thesis/Datasets/VCTK/VCTK-Corpus/wav8-valid"
-output_file = "/Users/aarontaub/Library/CloudStorage/Box-Box/Aaron-Personal/School/masters/Thesis/Datasets/VCTK/VCTK-Corpus/wav8-valid/data.jsonl"
+# Train
+input_folder = "/cs/dataset/Download/adiyoss/valentini/8k/clean_trainset_56spk_wav"
+output_file = "/cs/dataset/Download/adiyoss/valentini/8k/clean_trainset_56spk_wav/data.jsonl"
+create_jsonl(input_folder, output_file)
 
+# Validate
+input_folder = "/cs/dataset/Download/adiyoss/valentini/8k/clean_trainset_28spk_wav"
+output_file = "/cs/dataset/Download/adiyoss/valentini/8k/clean_trainset_28spk_wav/data.jsonl"
+create_jsonl(input_folder, output_file)
+
+# Evaluate
+input_folder = "/cs/dataset/Download/adiyoss/valentini/8k/clean_testset_wav"
+output_file = "/cs/dataset/Download/adiyoss/valentini/8k/clean_testset_wav/data.jsonl"
 create_jsonl(input_folder, output_file)
