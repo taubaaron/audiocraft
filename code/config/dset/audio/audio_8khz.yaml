@@ -11,9 +11,9 @@ datasource:
 #  evaluate: /Users/aarontaub/Library/CloudStorage/Box-Box/Aaron-Personal/School/masters/Thesis/Datasets/VCTK/VCTK-Corpus/wav8-test
 #  generate: /Users/aarontaub/Library/CloudStorage/Box-Box/Aaron-Personal/School/masters/Thesis/Datasets/VCTK/VCTK-Corpus/wav8-test # identical to evaluate
 
-
-  train: /cs/dataset/Download/adiyoss/valentini/8k/clean_trainset_56spk_wav/
-  valid: /cs/dataset/Download/adiyoss/valentini/8k/clean_trainset_28spk_wav/
-  evaluate: /cs/dataset/Download/adiyoss/valentini/8k/clean_testset_wav
-  generate: /cs/dataset/Download/adiyoss/valentini/8k/clean_testset_wav
+#TODO: change to data,jsonl files in egs folder
+  train: /cs/labs/adiyoss/aarontaub/thesis/audiocraft/code/egs/8k_elbit/8k_train/data.jsonl
+  valid: /cs/labs/adiyoss/aarontaub/thesis/audiocraft/code/egs/8k_elbit/8k_validate/data.jsonl
+  evaluate: /cs/labs/adiyoss/aarontaub/thesis/audiocraft/code/egs/8k_elbit/8k_test/data.jsonl
+  generate: /cs/labs/adiyoss/aarontaub/thesis/audiocraft/code/egs/8k_elbit/8k_test/data.jsonl
 

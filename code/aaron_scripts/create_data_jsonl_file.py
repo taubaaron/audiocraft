@@ -37,15 +37,15 @@ def create_jsonl(input_folder, output_file):
 
 # Train
 input_folder = "/cs/dataset/Download/adiyoss/valentini/8k/clean_trainset_56spk_wav"
-output_file = "/cs/dataset/Download/adiyoss/valentini/8k/clean_trainset_56spk_wav/data.jsonl"
+output_file = "/cs/labs/adiyoss/aarontaub/thesis/audiocraft/code/egs/8k_elbit/8k_train/data.jsonl"
 create_jsonl(input_folder, output_file)
 
 # Validate
 input_folder = "/cs/dataset/Download/adiyoss/valentini/8k/clean_trainset_28spk_wav"
-output_file = "/cs/dataset/Download/adiyoss/valentini/8k/clean_trainset_28spk_wav/data.jsonl"
+output_file = "/cs/labs/adiyoss/aarontaub/thesis/audiocraft/code/egs/8k_elbit/8k_validate/data.jsonl"
 create_jsonl(input_folder, output_file)
 
 # Evaluate
 input_folder = "/cs/dataset/Download/adiyoss/valentini/8k/clean_testset_wav"
-output_file = "/cs/dataset/Download/adiyoss/valentini/8k/clean_testset_wav/data.jsonl"
+output_file = "/cs/labs/adiyoss/aarontaub/thesis/audiocraft/code/egs/8k_elbit/8k_test/data.jsonl"
 create_jsonl(input_folder, output_file)
