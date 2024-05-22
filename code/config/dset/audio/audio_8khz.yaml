@@ -6,10 +6,14 @@ datasource:
   max_sample_rate: 8000
   max_channels: 1
 
-# TODO: Add 8khz dataset (should I just resample a regular dataset?)
-  train: /Users/aarontaub/Library/CloudStorage/Box-Box/Aaron-Personal/School/masters/Thesis/Datasets/VCTK/VCTK-Corpus/wav8-train
-  valid: /Users/aarontaub/Library/CloudStorage/Box-Box/Aaron-Personal/School/masters/Thesis/Datasets/VCTK/VCTK-Corpus/wav8-valid
-  evaluate: /Users/aarontaub/Library/CloudStorage/Box-Box/Aaron-Personal/School/masters/Thesis/Datasets/VCTK/VCTK-Corpus/wav8-test
-  generate: /Users/aarontaub/Library/CloudStorage/Box-Box/Aaron-Personal/School/masters/Thesis/Datasets/VCTK/VCTK-Corpus/wav8-test # identical to evaluate
+#  train: /Users/aarontaub/Library/CloudStorage/Box-Box/Aaron-Personal/School/masters/Thesis/Datasets/VCTK/VCTK-Corpus/wav8-train
+#  valid: /Users/aarontaub/Library/CloudStorage/Box-Box/Aaron-Personal/School/masters/Thesis/Datasets/VCTK/VCTK-Corpus/wav8-valid
+#  evaluate: /Users/aarontaub/Library/CloudStorage/Box-Box/Aaron-Personal/School/masters/Thesis/Datasets/VCTK/VCTK-Corpus/wav8-test
+#  generate: /Users/aarontaub/Library/CloudStorage/Box-Box/Aaron-Personal/School/masters/Thesis/Datasets/VCTK/VCTK-Corpus/wav8-test # identical to evaluate
 
+
+  train: /cs/dataset/Download/adiyoss/valentini/8k/clean_trainset_56spk_wav/
+  valid: /cs/dataset/Download/adiyoss/valentini/8k/clean_trainset_28spk_wav/
+  evaluate: /cs/dataset/Download/adiyoss/valentini/8k/clean_testset_wav
+  generate: /cs/dataset/Download/adiyoss/valentini/8k/clean_testset_wav
 

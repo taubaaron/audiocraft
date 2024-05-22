@@ -20,13 +20,13 @@ from ..utils import checkpoint
 from ..utils.samples.manager import SampleManager
 from ..utils.utils import get_pool_executor
 
-NOISY_TRAIN = True
+NOISY_TRAIN = False
 TRAIN_COUNT = 0
 logger = logging.getLogger(__name__)
 
 
 def process_noise(x):
-    print("dbgdbgdbg got to process_noise")
+    print("Got to process_noise")
     import torchaudio
     import random
     noise_path = "/Users/aarontaub/Library/CloudStorage/Box-Box/Aaron-Personal/School/masters/Thesis/Datasets/noises_1/audio-8khz/1-7456-A-13.wav"
