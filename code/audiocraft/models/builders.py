@@ -80,7 +80,7 @@ def get_compression_model(cfg: omegaconf.DictConfig) -> CompressionModel:
         renormalize = kwargs.pop('renormalize', False)
         # deprecated params
         kwargs.pop('renorm', None)
-        cfg.device = 'cpu'
+        # cfg.device = 'cpu' # Aaron
         return EncodecModel(encoder, decoder, quantizer,
                             frame_rate=frame_rate, renormalize=renormalize, **kwargs).to(cfg.device)
     else:
