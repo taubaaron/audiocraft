@@ -103,8 +103,8 @@ class CompressionSolver(
 
     def run_step(self, idx: int, batch: torch.Tensor, metrics: dict):
         """Perform one training or valid step on a given batch."""
-        import ipdb
-        ipdb.set_trace()
+        # import ipdb
+        # ipdb.set_trace()
         x = batch.to(self.device)
         y = x.clone()
 
