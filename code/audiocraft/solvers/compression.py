@@ -79,7 +79,7 @@ class CompressionSolver(
     def build_model(self):
         """Instantiate model and optimizer."""
         # Model and optimizer
-        self.device = 'cpu'
+        # self.device = 'cpu' # Aaron
         self.model = models.builders.get_compression_model(self.cfg).to(self.device)
         self.optimizer = builders.get_optimizer(self.model.parameters(), self.cfg.optim)
         self.register_stateful('model', 'optimizer')
