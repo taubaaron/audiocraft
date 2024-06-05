@@ -108,7 +108,7 @@ mpd:
 
 # data hyperparameters
 dataset:
-  batch_size: 64
+  batch_size: 32
   num_workers: 10
   segment_duration: 1
   train:

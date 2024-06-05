@@ -69,8 +69,8 @@ def get_encodec_autoencoder(encoder_name: str, cfg: omegaconf.DictConfig):
 def get_compression_model(cfg: omegaconf.DictConfig) -> CompressionModel:
     """Instantiate a compression model."""
     if cfg.compression_model == 'encodec':
-        import ipdb
-        ipdb.set_trace()
+        # import ipdb
+        # ipdb.set_trace()
         kwargs = dict_from_config(getattr(cfg, 'encodec'))
         encoder_name = kwargs.pop('autoencoder')
         quantizer_name = kwargs.pop('quantizer')
