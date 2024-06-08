@@ -6,8 +6,8 @@
 
 
 
-source /cs/labs/adiyoss/aarnotaub/venvs/env/bin/activate
-cd ../thesis/audiocraft/code
+source /cs/labs/adiyoss/aarnotaub/thesis/audiocraft/code/env_elbit/bin/activate.csh
+#cd ../thesis/audiocraft/code
 dora run solver=compression/encodec_base_8khz
 
 
