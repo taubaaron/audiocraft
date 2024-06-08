@@ -4,8 +4,10 @@ datasource:
   max_sample_rate: 8000
   max_channels: 1
 
-  train: /cs/labs/adiyoss/aarontaub/thesis/audiocraft/code/egs/8k_elbit-debug/8k_train/data.jsonl
-  valid: /cs/labs/adiyoss/aarontaub/thesis/audiocraft/code/egs/8k_elbit-debug/8k_validate/data.jsonl
-  evaluate: /cs/labs/adiyoss/aarontaub/thesis/audiocraft/code/egs/8k_elbit-debug/8k_test/data.jsonl
-  generate: /cs/labs/adiyoss/aarontaub/thesis/audiocraft/code/egs/8k_elbit-debug/8k_test/data.jsonl
+## clean 8k elbit
+#  train: /cs/labs/adiyoss/aarontaub/thesis/audiocraft/code/egs/8k_elbit-debug/8k_train/data.jsonl
+#  valid: /cs/labs/adiyoss/aarontaub/thesis/audiocraft/code/egs/8k_elbit-debug/8k_validate/data.jsonl
+#  evaluate: /cs/labs/adiyoss/aarontaub/thesis/audiocraft/code/egs/8k_elbit-debug/8k_test/data.jsonl
+#  generate: /cs/labs/adiyoss/aarontaub/thesis/audiocraft/code/egs/8k_elbit-debug/8k_test/data.jsonl
+
 
