@@ -11,14 +11,14 @@ datasource:
 #  evaluate: /Users/aarontaub/Library/CloudStorage/Box-Box/Aaron-Personal/School/masters/Thesis/Datasets/VCTK/VCTK-Corpus/wav8-test
 #  generate: /Users/aarontaub/Library/CloudStorage/Box-Box/Aaron-Personal/School/masters/Thesis/Datasets/VCTK/VCTK-Corpus/wav8-test # identical to evaluate
 
-#  train: /cs/labs/adiyoss/aarontaub/thesis/audiocraft/code/egs/8k_elbit/8k_train/data.jsonl
-#  valid: /cs/labs/adiyoss/aarontaub/thesis/audiocraft/code/egs/8k_elbit/8k_validate/data.jsonl
-#  evaluate: /cs/labs/adiyoss/aarontaub/thesis/audiocraft/code/egs/8k_elbit/8k_test/data.jsonl
-#  generate: /cs/labs/adiyoss/aarontaub/thesis/audiocraft/code/egs/8k_elbit/8k_test/data.jsonl
+  train: /cs/labs/adiyoss/aarontaub/thesis/audiocraft/code/egs/8k_elbit/8k_train/data.jsonl
+  valid: /cs/labs/adiyoss/aarontaub/thesis/audiocraft/code/egs/8k_elbit/8k_validate/data.jsonl
+  evaluate: /cs/labs/adiyoss/aarontaub/thesis/audiocraft/code/egs/8k_elbit/8k_test/data.jsonl
+  generate: /cs/labs/adiyoss/aarontaub/thesis/audiocraft/code/egs/8k_elbit/8k_test/data.jsonl
 
-  train: /cs/labs/adiyoss/aarontaub/thesis/audiocraft/code/egs/8k_elbit-noisy/8k_train/data.jsonl
-  valid: /cs/labs/adiyoss/aarontaub/thesis/audiocraft/code/egs/8k_elbit-noisy/8k_validate/data.jsonl
-  evaluate: /cs/labs/adiyoss/aarontaub/thesis/audiocraft/code/egs/8k_elbit-noisy/8k_test/data.jsonl
-  generate: /cs/labs/adiyoss/aarontaub/thesis/audiocraft/code/egs/8k_elbit-noisy/8k_test/data.jsonl
+#  train: /cs/labs/adiyoss/aarontaub/thesis/audiocraft/code/egs/8k_elbit-noisy/8k_train/data.jsonl
+#  valid: /cs/labs/adiyoss/aarontaub/thesis/audiocraft/code/egs/8k_elbit-noisy/8k_validate/data.jsonl
+#  evaluate: /cs/labs/adiyoss/aarontaub/thesis/audiocraft/code/egs/8k_elbit-noisy/8k_test/data.jsonl
+#  generate: /cs/labs/adiyoss/aarontaub/thesis/audiocraft/code/egs/8k_elbit-noisy/8k_test/data.jsonl
 
 
