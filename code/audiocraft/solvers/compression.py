@@ -29,7 +29,12 @@ def process_noise(x):
     print("Got to process_noise")
     import torchaudio
     import random
-    noise_path = "/Users/aarontaub/Library/CloudStorage/Box-Box/Aaron-Personal/School/masters/Thesis/Datasets/noises_1/audio-8khz/1-7456-A-13.wav"
+    import os
+
+    # choose random noise file
+    directory = "aaron_scripts/noise_dataset"
+    files = [f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))]
+    noise_path = directory + "/" + random.choice(files)
     noise, _ = torchaudio.load(noise_path)
 
     if noise.size(1) > x.size(1):
