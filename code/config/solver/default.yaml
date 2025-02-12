@@ -81,7 +81,7 @@ optim:
   ema:
     use: false  # whether to use EMA or not
     updates: ${optim.updates_per_epoch}  # frequency of updates of the EMA
-    device: cpu  # device for EMA, can be put on GPU if more frequent updates
+    device: cuda  # device for EMA, can be put on GPU if more frequent updates
     decay: 0.99  # EMA decay value, if null, no EMA is used
 
 schedule:

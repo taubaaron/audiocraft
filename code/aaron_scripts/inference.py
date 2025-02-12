@@ -1,7 +1,23 @@
 from audiocraft.solvers import CompressionSolver
 import torchaudio
 import torch
+from dora import git_save, hydra_main, XP
+from audiocraft.utils import checkpoint
+from audiocraft import models
 
+def get_model(checkpoint_path, device="cpu", ):
+    state = checkpoint.load_checkpoint(checkpoint_path)
+    assert state is not None and 'xp.cfg' in state, f"Could not load compression model from ckpt: {checkpoint_path}"
+    cfg = state['xp.cfg']
+    cfg.device = device
+    compression_model = models.builders.get_compression_model(cfg).to(device)
+    assert compression_model.sample_rate == cfg.sample_rate, "Compression model sample rate should match"
+
+    assert 'best_state' in state and state['best_state'] != {}
+    assert 'exported' not in state, "When loading an exported checkpoint, use the //pretrained/ prefix."
+    compression_model.load_state_dict(state['best_state']['model'])
+    compression_model.eval()
+    return compression_model
 
 def convert_audio(wav: torch.Tensor, sr: int, target_sr: int, target_channels: int):
     assert wav.shape[0] in [1, 2], "Audio must be mono or stereo."
@@ -22,19 +38,22 @@ def generate_audio(self, gen_tokens: torch.Tensor) -> torch.Tensor:
         with torch.no_grad():
             gen_audio = self.compression_model.decode(gen_tokens, None)
         return gen_audio
+
 def main():
     print("Started inference")
     # Model
     model = CompressionSolver.model_from_checkpoint('//pretrained/facebook/encodec_32khz') # frame_rate=50hz, sample_rate=32k, n_q=4, cardinality=2048
     # model = CompressionSolver.model_from_checkpoint('//pretrained/facebook/encodec_24khz') # frame_rate=75hz, sample_rate=24k, n_q=8, cardinality=1024
     # Or load from a custom checkpoint path
-    # model = CompressionSolver.model_from_checkpoint('/my_checkpoints/foo/bar/checkpoint.th')
-    # Here do not put the `//pretrained/` prefix!
+    # xps_file = "01f7a36f-leaky_rely_400"
+    # checkpoint_path = f'/cs/labs/adiyoss/aarontaub/thesis/audiocraft/code/xps/{xps_file}/checkpoint.th'
+    # model = get_model(checkpoint_path=checkpoint_path)
     # model = CompressionModel.get_pretrained('facebook/encodec_32khz')
     # model = CompressionModel.get_pretrained('dac_44khz')
 
     # Wav
-    wav, sr = torchaudio.load("/Users/aarontaub/Library/CloudStorage/Box-Box/Aaron-Personal/School/masters/Thesis/AudioCraft/Code/dataset/example/electro_1.mp3")  # reads audio file
+    wav, sr = torchaudio.load("aaron_xai4ae/dataset/vctk_sub_dataset/p225_001_mic1.flac")  # reads audio file
+    # wav, sr = torchaudio.load("/cs/labs/adiyoss/shared/data/speech/LibriSpeech/mp3/100/121669/121669.mp3")  # reads audio file
     # wav.shape
     wav = convert_audio(wav, sr, model.sample_rate, model.channels)  # converts sample rate to match target sample rate (per model)
     wav = wav.unsqueeze(0)  # Adds another dimension for encoding function
@@ -42,6 +61,22 @@ def main():
     print("start encoding")
     audio_tokens, scale = model.encode(wav)
     print("finished encoding")
+    ###
+    print("start decoding")
+    token_output = model.decode(audio_tokens, scale)
+    print("finished decoding")
+
+    token_output = token_output.squeeze(0)
+    token_output = (token_output*32767).to(torch.int16)
+    file_name = f"aaron_xai4ae/dataset/vctk_sub_dataset/p225_001_mic1-reconstructed.mp3"
+    torchaudio.save(file_name, token_output, 32000)
+    print(f"saved audio as: {file_name}")
+
+
+if __name__ == '__main__':
+    main()
+    print("finished")
+
 
     """
     audio_tokens
@@ -52,20 +87,6 @@ def main():
     model.frame_rate * torch.log2(torch.tensor(model.cardinality)) * model.num_codebooks  # kbps
     num_codebooks
     """
-    ###
-    print("start decoding")
-    token_output = model.decode(audio_tokens, scale)
-    print("finished decoding")
-
-    token_output = token_output.squeeze(0)
-    token_output = (token_output*32767).to(torch.int16)
-    file_name = "AudioCraft/Code/temp_wav_aaron2.wav"
-    torchaudio.save("/Users/aarontaub/Library/CloudStorage/Box-Box/Aaron-Personal/School/masters/Thesis/AudioCraft/Code/temp_wav_aaron2.wav", token_output, 32000)
-    print(f"saved audio as: {file_name}")
-
-
-if __name__ == '__main__':
-    main()
 #
 #
 # wav = convert_audio(wav, sr, model.sample_rate, model.channels)
@@ -79,7 +100,6 @@ if __name__ == '__main__':
 # # generated_audio = generate_audio(token_output)
 # from IPython.display import display, Audio
 # display(Audio(token_output.detach().cpu().squeeze(), rate=32000))
-print("finished")
 
 
 
@@ -111,11 +131,11 @@ print("finished")
 
 
 # Finally, you can also retrieve the full Solver object, with its dataloader etc.
-from audiocraft import train
-from pathlib import Path
-import logging
-import os
-import sys
+# from audiocraft import train
+# from pathlib import Path
+# import logging
+# import os
+# import sys
 # Uncomment the following line if you want some detailed logs when loading a Solver.
 # logging.basicConfig(stream=sys.stderr, level=logging.INFO)
 #

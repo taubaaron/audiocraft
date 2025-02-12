@@ -16,7 +16,7 @@ tqdm
 transformers>=4.31.0  # need Encodec there.
 xformers<0.0.23
 demucs
-librosa
+librosa 
 gradio
 torchmetrics
 encodec

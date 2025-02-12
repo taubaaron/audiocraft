@@ -1,24 +1,57 @@
-from encodec import EncodecModel
-from encodec.utils import convert_audio
-
+import logging
+import os
 import torchaudio
 import torch
+from dora import git_save, hydra_main
+from audiocraft.solvers.compression import CompressionSolver
+from audiocraft.utils.checkpoint import resolve_checkpoint_path
 
-# Instantiate a pretrained EnCodec model
-model = EncodecModel.encodec_model_24khz()
-# The number of codebooks used will be determined bythe bandwidth selected.
-# E.g. for a bandwidth of 6kbps, `n_q = 8` codebooks are used.
-# Supported bandwidths are 1.5kbps (n_q = 2), 3 kbps (n_q = 4), 6 kbps (n_q = 8) and 12 kbps (n_q =16) and 24kbps (n_q=32).
-# For the 48 kHz model, only 3, 6, 12, and 24 kbps are supported. The number
-# of codebooks for each is half that of the 24 kHz model as the frame rate is twice as much.
-model.set_target_bandwidth(6.0)
+logger = logging.getLogger(__name__)
 
-# Load and pre-process the audio waveform
-wav, sr = torchaudio.load("/Users/aarontaub/Library/CloudStorage/Box-Box/Aaron-Personal/School/masters/Thesis/AudioCraft/Code/dataset/example/electro_1.mp3")
-wav = convert_audio(wav, sr, model.sample_rate, model.channels)
-wav = wav.unsqueeze(0)
+def convert_audio(wav: torch.Tensor, sr: int, target_sr: int, target_channels: int):
+    assert wav.shape[0] in [1, 2], "Audio must be mono or stereo."
+    if target_channels == 1:
+        wav = wav.mean(0, keepdim=True)
+    elif target_channels == 2:
+        wav = wav.expand(target_channels, -1)
+    wav = torchaudio.transforms.Resample(sr, target_sr)(wav)
+    return wav
 
-# Extract discrete codes from EnCodec
-with torch.no_grad():
-    encoded_frames = model.encode(wav)
-codes = torch.cat([encoded[0] for encoded in encoded_frames], dim=-1)  # [B, n_q, T]
+@hydra_main(config_path="../config", config_name="config", version_base="1.1")
+def main(cfg):
+    logger.info("Started inference")
+
+    # Load checkpoint
+    checkpoint_path = "xps/01f7a36f/checkpoint_400.th"
+    logger.info(f"Using checkpoint: {checkpoint_path}")
+    _checkpoint_path = resolve_checkpoint_path(checkpoint_path, use_fsdp=False)
+    if not os.path.exists(_checkpoint_path):
+        raise FileNotFoundError(f"Checkpoint not found at {_checkpoint_path}")
+
+    # Load model
+    model = CompressionSolver.model_from_checkpoint(_checkpoint_path)
+    logger.info("Model loaded successfully!")
+
+    # Load and preprocess audio
+    input_audio_path = "code/dataset/example/electro_1.mp3"
+    wav, sr = torchaudio.load(input_audio_path)
+    wav = convert_audio(wav, sr, model.sample_rate, model.channels).unsqueeze(0)
+
+    # Encoding
+    logger.info("Start encoding")
+    audio_tokens, scale = model.encode(wav)
+    logger.info("Finished encoding")
+
+    # Decoding
+    logger.info("Start decoding")
+    token_output = model.decode(audio_tokens, scale)
+    logger.info("Finished decoding")
+
+    # Save the reconstructed audio
+    token_output = token_output.squeeze(0).mul(32767).to(torch.int16)
+    output_audio_path = "code/dataset/example/electro_1-reconstructed.mp3"
+    torchaudio.save(output_audio_path, token_output, model.sample_rate)
+    logger.info(f"Saved reconstructed audio to: {output_audio_path}")
+
+if __name__ == "__main__":
+    main()
