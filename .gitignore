@@ -60,3 +60,9 @@ dataset/*
 /notebooks
 /local_scripts
 /notes
+code/xps/01f7a36f/checkpoint.th
+code/xps/01f7a36f/checkpoint_150.th
+code/xps/01f7a36f/history.json
+code/xps/01f7a36f/samples
+code/xps/01f7a36f/solver.log.0
+code/xps/01f7a36f/train_file.txt
